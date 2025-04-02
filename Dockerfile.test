@@ -1,15 +1,8 @@
-FROM node:10
 
-WORKDIR /app
-
-# העתק קבצי package.json ו-package-lock.json
-COPY package*.json ./
-
-# התקן תלויות
+FROM node:8-alpine as build
+COPY package-lock.json .
+COPY package.json .
 RUN npm install
-
-# העתק את שאר קוד המקור
 COPY . .
-
-# הרץ את הבדיקות
+RUN npm run build
 CMD ["npm", "test", "--", "--watchAll=false"]
