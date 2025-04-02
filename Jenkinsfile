@@ -187,7 +187,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 sshagent(['github']) {
-                    sh 'rm -rf frontend'
+                    sh 'rm -rf f'
                     sh 'git clone git@github.com:sara-golombeck/f.git'
                 }
             }
