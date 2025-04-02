@@ -193,13 +193,15 @@ pipeline {
             }
         }
         
-        stage('Run Tests') {
-            steps {
-                script {
-                    sh 'docker run --rm -v ${WORKSPACE}/frontend:/app -w /app node:8-alpine sh -c "npm install && npm test -- --watchAll=false"'
-                }
-            }
-        }
+stage('Run Tests') {
+    steps {
+        // וודא שאתה נמצא בתיקייה הנכונה שבה יש את package.json
+        sh 'pwd && ls -la ${WORKSPACE}/frontend'
+        
+        // הרץ בדיקות בקונטיינר קטן וזמני
+        sh 'docker run --rm -v ${WORKSPACE}/frontend:/app -w /app node:14-alpine sh -c "npm install && npm test -- --watchAll=false"'
+    }
+}
         
         stage('Build Docker Image') {
             steps {
