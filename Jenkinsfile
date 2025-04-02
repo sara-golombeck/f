@@ -196,10 +196,10 @@ pipeline {
 stage('Run Tests') {
     steps {
         // וודא שאתה נמצא בתיקייה הנכונה שבה יש את package.json
-        sh 'pwd && ls -la ${WORKSPACE}/frontend'
+        sh 'pwd && ls -la ${WORKSPACE}/f'
         
         // הרץ בדיקות בקונטיינר קטן וזמני
-        sh 'docker run --rm -v ${WORKSPACE}/frontend:/app -w /app node:14-alpine sh -c "npm install && npm test -- --watchAll=false"'
+        sh 'docker run --rm -v ${WORKSPACE}/f:/app -w /app node:14-alpine sh -c "npm install && npm test -- --watchAll=false"'
     }
 }
         
