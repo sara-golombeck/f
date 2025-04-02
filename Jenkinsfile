@@ -193,7 +193,7 @@ pipeline {
         
         stage('Run Tests') {
             steps {
-                dir('frontend') {  // או 'f' אם זה הנתיב הנכון
+                dir('f') {  // או 'f' אם זה הנתיב הנכון
                     // יצירת הדוקרפייל לבדיקות אם לא קיים
                     sh '''
                     cat > Dockerfile.test << 'EOL'
