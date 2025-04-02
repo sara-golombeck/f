@@ -2,8 +2,10 @@ FROM node:14-alpine
 
 WORKDIR /app
 
-# העתק קבצי package.json ו-package-lock.json תחילה
-# זה משפר את ניצול המטמון של דוקר בבניות חוזרות
+# התקן את הכלים הדרושים לבניית node-sass
+RUN apk add --no-cache --virtual .gyp python3 make g++
+
+# העתק קבצי package.json ו-package-lock.json
 COPY package*.json ./
 
 # התקן תלויות
