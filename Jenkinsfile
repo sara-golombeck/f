@@ -217,8 +217,11 @@ pipeline {
                     
                     // בנה ותריץ את קונטיינר הבדיקות
                     // sh 'pwd &&ls -al {WORKSPACE}/f'
-                    sh 'docker build -f Dockerfile.test -t zelda-frontend-test .'
-                    sh 'docker run --rm zelda-frontend-test'
+                    sh 'npm install'
+                    sh 'npm test -- --watchAll=false'
+
+                    // sh 'docker build -f Dockerfile.test -t zelda-frontend-test .'
+                    // sh 'docker run --rm zelda-frontend-test'
                 // }
             }
         }
