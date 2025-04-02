@@ -193,23 +193,16 @@ pipeline {
             }
         }
         
-// stage('Run Tests') {
-//     steps {
-//         // וודא שאתה נמצא בתיקייה הנכונה שבה יש את package.json
-//         sh 'pwd && ls -la ${WORKSPACE}/f'
-        
-//         // הרץ בדיקות בקונטיינר קטן וזמני
-//         sh 'docker run --rm -v "${WORKSPACE}/f:/app" -w /app node:14-alpine sh -c "npm install && npm test -- --watchAll=false"'
-//            }
-// }
-        stage('Run Tests') {
+stage('Run Tests') {
     steps {
-        sh '''
-            # הרץ בדיקות בקונטיינר - שים לב לנתיב הנכון ולמירכאות כפולות מסביב לפקודת sh -c
-            docker run --rm -v "${WORKSPACE}/f:/app" -w /app node:14-alpine sh -c "npm install && npm test -- --watchAll=false"
-        '''
+        // וודא שאתה נמצא בתיקייה הנכונה שבה יש את package.json
+        sh 'pwd && ls -la ${WORKSPACE}/f'
+        
+        // הרץ בדיקות בקונטיינר קטן וזמני
+        sh 'docker run --rm -v "${WORKSPACE}:/app" -w /app node:14-alpine sh -c "npm install && npm test -- --watchAll=false"'
     }
 }
+        
         stage('Build Docker Image') {
             steps {
                 script {
