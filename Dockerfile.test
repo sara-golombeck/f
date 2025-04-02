@@ -1,9 +1,6 @@
-FROM node:14-alpine
+FROM node:10
 
 WORKDIR /app
-
-# התקן את הכלים הדרושים לבניית node-sass
-RUN apk add --no-cache python3 make g++ && ln -sf python3 /usr/bin/python
 
 # העתק קבצי package.json ו-package-lock.json
 COPY package*.json ./
