@@ -193,32 +193,32 @@ pipeline {
         
         stage('Run Tests') {
             steps {
-                dir('f') {  // או 'f' אם זה הנתיב הנכון
-                    // יצירת הדוקרפייל לבדיקות אם לא קיים
-                    sh '''
-                    cat > Dockerfile.test << 'EOL'
-FROM node:14-alpine
+//                 dir('f') {  // או 'f' אם זה הנתיב הנכון
+//                     // יצירת הדוקרפייל לבדיקות אם לא קיים
+//                     sh '''
+//                     cat > Dockerfile.test << 'EOL'
+// FROM node:14-alpine
 
-WORKDIR /app
+// WORKDIR /app
 
-# העתק קבצי package.json ו-package-lock.json תחילה
-COPY package*.json ./
+// # העתק קבצי package.json ו-package-lock.json תחילה
+// COPY package*.json ./
 
-# התקן תלויות
-RUN npm install
+// # התקן תלויות
+// RUN npm install
 
-# העתק את שאר קוד המקור
-COPY . .
+// # העתק את שאר קוד המקור
+// COPY . .
 
-# הרץ את הבדיקות
-CMD ["npm", "test", "--", "--watchAll=false"]
-EOL
-                    '''
+// # הרץ את הבדיקות
+// CMD ["npm", "test", "--", "--watchAll=false"]
+// EOL
+//                     '''
                     
                     // בנה ותריץ את קונטיינר הבדיקות
                     sh 'docker build -f Dockerfile.test -t zelda-frontend-test .'
                     sh 'docker run --rm zelda-frontend-test'
-                }
+                // }
             }
         }
         
