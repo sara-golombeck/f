@@ -181,7 +181,7 @@
 pipeline {
     agent any
     tools {
-        nodjs "node_23"
+        nodejs "node_23"
     }
     stages {
         stage('Clone Repository') {
