@@ -124,7 +124,7 @@ pipeline {
             steps {
                 sshagent(['github']) {
                     sh 'rm -rf frontend'
-                    sh 'git clone git@github.com:le7-devops/frontend.git'
+                    sh 'git clone git@github.com:sara-golombeck/f.git'
                 }
             }
         }
