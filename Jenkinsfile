@@ -27,13 +27,7 @@ pipeline {
             }
         }
         
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh 'docker build -f ./Dockerfile -t zelda_frontend .'
-                }
-            }
-        }
+
         
         stage('Login to GHCR and Push Docker Image') {
             steps {
