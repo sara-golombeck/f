@@ -178,8 +178,6 @@
 //         }
 //     }
 // }
-
-
 pipeline {
     agent any
     
@@ -187,20 +185,43 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 sshagent(['github']) {
-                    sh 'rm -rf f'
-                    sh 'git clone git@github.com:sara-golombeck/f.git'
+                    sh 'rm -rf frontend'
+                    sh 'git clone git@github.com:le7-devops/frontend.git'
                 }
             }
         }
-stage('Run Tests') {
-    steps {
-        sh 'pwd && ls -la ${WORKSPACE}/f'
         
-        dir('f') {
-            sh 'docker run --rm -v "$(pwd):/app" -w /app node:14-alpine sh -c "npm install && npm test -- --watchAll=false"'
+        stage('Run Tests') {
+            steps {
+                dir('frontend') {  // או 'f' אם זה הנתיב הנכון
+                    // יצירת הדוקרפייל לבדיקות אם לא קיים
+                    sh '''
+                    cat > Dockerfile.test << 'EOL'
+FROM node:14-alpine
+
+WORKDIR /app
+
+# העתק קבצי package.json ו-package-lock.json תחילה
+COPY package*.json ./
+
+# התקן תלויות
+RUN npm install
+
+# העתק את שאר קוד המקור
+COPY . .
+
+# הרץ את הבדיקות
+CMD ["npm", "test", "--", "--watchAll=false"]
+EOL
+                    '''
+                    
+                    // בנה ותריץ את קונטיינר הבדיקות
+                    sh 'docker build -f Dockerfile.test -t zelda-frontend-test .'
+                    sh 'docker run --rm zelda-frontend-test'
+                }
+            }
         }
-    }
-}        
+        
         stage('Build Docker Image') {
             steps {
                 script {
@@ -209,29 +230,6 @@ stage('Run Tests') {
             }
         }
         
-        stage('Login to GHCR and Push Docker Image') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'ghcr-token', variable: 'GITHUB_TOKEN')]) {
-                        sh 'echo $GITHUB_TOKEN | docker login ghcr.io -u le7-devops --password-stdin'
-                        sh 'docker tag zelda_frontend ghcr.io/le7-devops/frontend:latest'
-                        sh 'docker push ghcr.io/le7-devops/frontend:latest'
-                    }
-                }
-            }
-        }
-        
-        stage('Push Version to Git') {
-            steps {
-                sshagent(['github']) {
-                    script {
-                        sh 'git config user.email "sara.beck.dev@gmail.com"'
-                        sh 'git config user.name "sara"'
-                        sh 'git tag -a v$(date +"%Y%m%d%H%M%S") -m "Automated version update"'
-                        sh 'git push --tags'
-                    }
-                }
-            }
-        }
+        // שאר השלבים...
     }
 }
