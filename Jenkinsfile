@@ -15,7 +15,7 @@ pipeline {
             steps {
                     sh 'docker build -f Dockerfile.test -t zelda-frontend-test .'
                     // sh 'docker run --rm zelda-frontend-test'
-                    sh 'docker run --rm -v $(pwd):/app -w /app node:8-alpine npm test -- --watchAll=false'
+                    sh 'docker run --rm -v $(pwd):/app -w /app node:8-alpine sh -c "npm install && npm test -- --watchAll=false"'
             }
         }
         
