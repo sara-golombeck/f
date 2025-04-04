@@ -11,6 +11,13 @@ pipeline {
             }
         }
         
+        stage('Run Tests') {
+            steps {
+                sh 'docker build -f Dockerfile.test -t zelda-frontend-test .'
+                sh 'docker run --rm zelda-frontend-test'
+            }
+        }          
+         
         stage('Build Docker Image') {
             steps {
                 script {
