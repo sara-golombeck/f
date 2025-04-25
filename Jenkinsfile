@@ -12,9 +12,8 @@ stage('Run Tests') {
     steps {
         script {
             sh 'docker build --target build -t zelda-frontend-test .'
-            sh 'docker run --rm zelda-frontend-test -e CI=true npm test -- --watchAll=false --no-watchman --verbose
-
-'  }
+            sh 'docker run --rm zelda-frontend-test -e CI=true npm test -- --watchAll=false --no-watchman --verbose'
+             }
     }
 }    
          
