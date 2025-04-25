@@ -11,7 +11,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh 'docker build --target build -t zelda-frontend-test .'
-                sh 'docker run --rm -e NODE_ENV=test zelda-frontend-test npm run tes'
+                sh 'docker run --rm -e NODE_ENV=test zelda-frontend-test npm run test'
 
             }
         }          
