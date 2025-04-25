@@ -11,8 +11,8 @@ pipeline {
 stage('Run Tests') {
     steps {
         script {
-            sh 'cd frontend && docker build -t zelda-frontend-test -f Dockerfile.test .'
-            sh 'docker run --rm zelda-frontend-test npm test -- --all'
+            sh 'cd frontend && docker build -t zelda-frontend-test .'
+            sh 'docker run --rm zelda-frontend-test npm test -- --no-watchman --watchAll=false'
         }
     }
 }    
