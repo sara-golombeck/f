@@ -10,6 +10,7 @@ const {
   removeTypeFilter
 } = actions;
 
+
 describe('populateRecipes', () => {
   it('should return an object with a type of POPULATE_RECIPES and a recipes array', () => {
     const recipes = [{
