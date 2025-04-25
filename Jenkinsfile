@@ -10,7 +10,7 @@ pipeline {
         
         stage('Run Tests') {
             steps {
-                sh 'docker build --target -t zelda-frontend-test .'
+                sh 'docker build --target build -t zelda-frontend-test .'
                 sh 'docker run --rm zelda-frontend-test npm test -- --watchAll=false'
 
             }
