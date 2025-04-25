@@ -11,7 +11,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh 'docker build --target build -t zelda-frontend-test .'
-                sh 'docker run --rm zelda-frontend-test npm test -- --watchAll=false --ci -a'
+                sh 'docker run --rm zelda-frontend-test npx jest --runInBand --no-cache'
 
             }
         }          
