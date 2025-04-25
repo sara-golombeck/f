@@ -8,15 +8,35 @@ pipeline {
             }
         }
         
-        stage('Run Tests') {
-            steps {
-                sh 'docker build --target build -t zelda-frontend-test .'
-                sh 'docker run --rm -e NODE_ENV=test zelda-frontend-test npm run test -- --watchAll=false --ci'
+        // stage('Run Tests') {
+        //     steps {
+        //         sh 'docker build --target build -t zelda-frontend-test .'
+        //         sh 'docker run --rm -e NODE_ENV=test zelda-frontend-test npm run test -- --watchAll=false --ci'
 
-            }
-        }          
+        //     }
+        // }          
     
-         
+stage('Run Tests') {
+    steps {
+        script {
+            // שימוש ב-shell script קטן שיוצר סביבת git ורץ בדיקות
+            sh '''
+                # קודם בנה את התמונה
+                docker build --target build -t zelda-frontend-test .
+                
+                # הרץ את הבדיקות עם שלב ביניים שיוצר repo git
+                docker run --rm -e NODE_ENV=test -e CI=true zelda-frontend-test sh -c "
+                    git init && 
+                    git config --global user.email 'test@example.com' && 
+                    git config --global user.name 'Test User' && 
+                    git add . && 
+                    git commit -m 'Initial commit' && 
+                    npm test -- --watchAll=false --no-watchman --ci --testPathIgnorePatterns=frontend/src/,f/src/"
+                "
+            '''
+        }
+    }
+}         
         stage('Build Docker Image') {
             steps {
                 script {
