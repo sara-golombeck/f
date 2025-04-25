@@ -12,7 +12,7 @@ stage('Run Tests') {
     steps {
         script {
             sh 'cd frontend && docker build -t zelda-frontend-test -f Dockerfile.test .'
-            sh 'docker run --rm zelda-frontend-test'
+            sh 'docker run --rm zelda-frontend-test npm test -- --runInBand --watchAll=false'
         }
     }
 }    
