@@ -2,21 +2,20 @@ pipeline {
     agent any
     
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                sshagent(['github']) {
-                    sh 'rm -rf frontend'
-                    sh 'git clone git@github.com:le7-devops/frontend.git'
-                }
+                checkout scm
             }
         }
         
         stage('Run Tests') {
             steps {
-                sh 'docker build -f Dockerfile.test -t zelda-frontend-test .'
-                sh 'docker run --rm zelda-frontend-test'
+                sh 'docker build --target -t zelda-frontend-test .'
+                sh 'docker run --rm zelda-frontend-test npm test -- --watchAll=false'
+
             }
         }          
+    
          
         stage('Build Docker Image') {
             steps {
